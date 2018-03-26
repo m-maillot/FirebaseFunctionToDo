@@ -7,3 +7,4 @@ lerna-debug.log
 service-account-credentials.json
 build
 .gradle
+functions/firebase-debug.log
