@@ -1,0 +1,34 @@
+[debug] [2018-03-26T07:59:38.907Z] ----------------------------------------------------------------------
+[debug] [2018-03-26T07:59:38.909Z] Command:       /Users/martialmaillot/.nvm/versions/node/v6.11.5/bin/node /Users/martialmaillot/.nvm/versions/node/v6.11.5/bin/firebase serve --only functions
+[debug] [2018-03-26T07:59:38.910Z] CLI Version:   3.17.7
+[debug] [2018-03-26T07:59:38.910Z] Platform:      darwin
+[debug] [2018-03-26T07:59:38.910Z] Node Version:  v6.11.5
+[debug] [2018-03-26T07:59:38.910Z] Time:          Mon Mar 26 2018 09:59:38 GMT+0200 (CEST)
+[debug] [2018-03-26T07:59:38.910Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-03-26T07:59:38.921Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-03-26T07:59:38.921Z] > authorizing via signed-in user
+[debug] [2018-03-26T07:59:38.923Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/todomedium  
+  
+ Mon Mar 26 2018 09:59:38 GMT+0200 (CEST)
+[debug] [2018-03-26T07:59:39.607Z] <<< HTTP RESPONSE 200
+[debug] [2018-03-26T07:59:39.608Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/todomedium/tokens  
+  
+ Mon Mar 26 2018 09:59:39 GMT+0200 (CEST)
+[debug] [2018-03-26T07:59:40.305Z] <<< HTTP RESPONSE 200
+[debug] [2018-03-26T07:59:40.306Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/todomedium  
+  
+ Mon Mar 26 2018 09:59:40 GMT+0200 (CEST)
+[debug] [2018-03-26T07:59:41.067Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/Users/martialmaillot/Documents/workspace/medium/ToDoFirebase'...
+[info] 
+[info] i  functions: Preparing to emulate functions.
+[debug] [2018-03-26T07:59:41.604Z] Fetching environment
+[debug] [2018-03-26T07:59:41.606Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/913920029860:getServerAppConfig  
+  
+ Mon Mar 26 2018 09:59:41 GMT+0200 (CEST)
+[debug] [2018-03-26T07:59:42.090Z] <<< HTTP RESPONSE 200
+[debug] [2018-03-26T07:59:42.090Z] Starting @google-cloud/functions-emulator
+[debug] [2018-03-26T07:59:43.675Z] Parsing function triggers
+[info] ✔  functions: v1: http://localhost:5000/todomedium/us-central1/v1
