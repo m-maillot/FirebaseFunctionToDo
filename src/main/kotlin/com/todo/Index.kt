@@ -1,6 +1,8 @@
 package com.todo
 
 import com.expressjs.wrapper.Express
+import com.expressjs.wrapper.Request
+import com.expressjs.wrapper.Response
 import com.firebase.wrappers.admin.Admin
 import com.firebase.wrappers.admin.firestore.DocumentData
 import com.firebase.wrappers.admin.firestore.get
@@ -25,20 +27,18 @@ fun main(args: Array<String>) {
                     val data = doc.data().unsafeCast<Task>()
                     res.status(200).json(Task(doc.id, data.label, data.time))
                 }
+            }).catch({ err ->
+                res.status(500).json(err)
             })
-                    .catch({ err ->
-                        res.status(500).json(err)
-                    })
         } else {
-            db.collection("todo").get().then({ snapshot ->
-                val result = snapshot.docs.toList().map {
+            db.collection("task").get().then({ snapshot ->
+                val result = snapshot.docs.map {
                     Task(it.id, it.data()!!["label"] as String, it.data()!!["time"] as Double)
                 }
                 res.status(200).json(result)
+            }).catch({ err ->
+                res.status(500).json(err)
             })
-                    .catch({ err ->
-                        res.status(500).json(err)
-                    })
         }
     })
 
@@ -47,10 +47,7 @@ fun main(args: Array<String>) {
         val inputTask = Task(label = input.label, time = Date().getTime())
 
         // Hack because firestore check object prototype and KotlinJS has his own
-        db.collection("task").add(jsObject {
-            label = inputTask.label
-            time = inputTask.time
-        }).then({ ref ->
+        db.collection("task").add(JSON.parse(JSON.stringify(inputTask))).then({ ref ->
             res.status(201).json(Task(ref.id, inputTask.label, inputTask.time))
         }).catch({ error ->
             res.status(500).json(error)
@@ -64,6 +61,8 @@ fun main(args: Array<String>) {
         })
     })
 
+
+
     exports.v1 = Functions.https.onRequest(app)
 }
 
@@ -71,9 +70,3 @@ data class TaskInput(val label: String)
 data class Task(val id: String? = undefined, val label: String, val time: Double) : DocumentData
 data class Params(val id: String? = undefined)
 data class Message(val msg: String)
-
-inline fun jsObject(init: dynamic.() -> Unit): dynamic {
-    val o = js("{}")
-    init(o)
-    return o
-}

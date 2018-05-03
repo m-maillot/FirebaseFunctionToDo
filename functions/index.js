@@ -3,6 +3,10 @@
   var $$importsForInline$$ = _.$$importsForInline$$ || (_.$$importsForInline$$ = {});
   var Kind_CLASS = Kotlin.Kind.CLASS;
   var defineInlineFunction = Kotlin.defineInlineFunction;
+  var equals = Kotlin.equals;
+  var Unit = Kotlin.kotlin.Unit;
+  var ensureNotNull = Kotlin.ensureNotNull;
+  var throwCCE = Kotlin.throwCCE;
   function Config(type, project_id, private_key_id, private_key, client_id, client_email, auth_uri, token_uri, auth_provider_x509_cert_url, client_x509_cert_url) {
     this.type = type;
     this.project_id = project_id;
@@ -285,10 +289,98 @@
   FileMetaData.prototype.equals = function (other) {
     return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.contentType, other.contentType) && Kotlin.equals(this.metadata, other.metadata) && Kotlin.equals(this.cacheControl, other.cacheControl)))));
   };
+  function main$lambda$lambda(closure$res) {
+    return function (doc) {
+      if (!doc.exists) {
+        closure$res.status(404).json(new Message('Task not found!'));
+      }
+       else {
+        var data = doc.data();
+        closure$res.status(200).json(new Task(doc.id, data.label, data.time));
+      }
+      return Unit;
+    };
+  }
+  function main$lambda$lambda_0(closure$res) {
+    return function (err) {
+      closure$res.status(500).json(err);
+      return Unit;
+    };
+  }
+  var ArrayList_init = Kotlin.kotlin.collections.ArrayList_init_ww73n8$;
+  function main$lambda$lambda_1(closure$res) {
+    return function (snapshot) {
+      var $receiver = snapshot.docs;
+      var destination = ArrayList_init($receiver.length);
+      var tmp$;
+      for (tmp$ = 0; tmp$ !== $receiver.length; ++tmp$) {
+        var item = $receiver[tmp$];
+        var tmp$_0, tmp$_1;
+        destination.add_11rb$(new Task(item.id, typeof (tmp$_0 = ensureNotNull(item.data())['label']) === 'string' ? tmp$_0 : throwCCE(), typeof (tmp$_1 = ensureNotNull(item.data())['time']) === 'number' ? tmp$_1 : throwCCE()));
+      }
+      var result = destination;
+      closure$res.status(200).json(result);
+      return Unit;
+    };
+  }
+  function main$lambda$lambda_2(closure$res) {
+    return function (err) {
+      closure$res.status(500).json(err);
+      return Unit;
+    };
+  }
+  function main$lambda(closure$db) {
+    return function (req, res) {
+      var params = req.params;
+      if (!equals(params.id, undefined)) {
+        closure$db.collection('task').doc(params.id).get().then(main$lambda$lambda(res)).catch(main$lambda$lambda_0(res));
+      }
+       else {
+        closure$db.collection('task').get().then(main$lambda$lambda_1(res)).catch(main$lambda$lambda_2(res));
+      }
+      return Unit;
+    };
+  }
+  function main$lambda$lambda_3(closure$res, closure$inputTask) {
+    return function (ref) {
+      closure$res.status(201).json(new Task(ref.id, closure$inputTask.label, closure$inputTask.time));
+      return Unit;
+    };
+  }
+  function main$lambda$lambda_4(closure$res) {
+    return function (error) {
+      closure$res.status(500).json(error);
+      return Unit;
+    };
+  }
+  function main$lambda_0(closure$db) {
+    return function (req, res) {
+      var input = req.body;
+      var inputTask = new Task(void 0, input.label, (new Date()).getTime());
+      closure$db.collection('task').add(JSON.parse(JSON.stringify(inputTask))).then(main$lambda$lambda_3(res, inputTask)).catch(main$lambda$lambda_4(res));
+      return Unit;
+    };
+  }
+  function main$lambda$lambda_5(closure$res) {
+    return function (it) {
+      closure$res.status(200).json(new Message('Task has been deleted'));
+      return Unit;
+    };
+  }
+  function main$lambda_1(closure$db) {
+    return function (req, res) {
+      var params = req.params;
+      closure$db.collection('task').doc(params.id).delete().then(main$lambda$lambda_5(res));
+      return Unit;
+    };
+  }
   function main(args) {
     var app = new $module$express();
     $module$firebase_admin.initializeApp($module$firebase_functions.config().firebase);
     var db = $module$firebase_admin.firestore();
+    app.get('/task/:id?', main$lambda(db));
+    app.put('/task', main$lambda_0(db));
+    app.delete('/task/:id', main$lambda_1(db));
     exports.v1 = $module$firebase_functions.https.onRequest(app);
   }
   function TaskInput(label) {
@@ -405,11 +497,6 @@
   Message.prototype.equals = function (other) {
     return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && Kotlin.equals(this.msg, other.msg))));
   };
-  var jsObject = defineInlineFunction('index.com.todo.jsObject_5ij4lk$', function (init) {
-    var o = {};
-    init(o);
-    return o;
-  });
   var package$com = _.com || (_.com = {});
   var package$firebase = package$com.firebase || (package$com.firebase = {});
   var package$wrappers = package$firebase.wrappers || (package$firebase.wrappers = {});
@@ -423,14 +510,13 @@
   package$storage.BucketFileOptions = BucketFileOptions;
   package$storage.WriteStreamOptions = WriteStreamOptions;
   package$storage.FileMetaData = FileMetaData;
+  $$importsForInline$$.index = _;
   var package$todo = package$com.todo || (package$com.todo = {});
   package$todo.main_kand9s$ = main;
   package$todo.TaskInput = TaskInput;
   package$todo.Task = Task;
   package$todo.Params = Params;
   package$todo.Message = Message;
-  $$importsForInline$$.index = _;
-  package$todo.jsObject_5ij4lk$ = jsObject;
   main([]);
   Kotlin.defineModule('index', _);
   return _;
